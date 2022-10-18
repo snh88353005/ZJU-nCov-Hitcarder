@@ -89,11 +89,13 @@ class HitCarder(object):
         except IndexError as _:
             raise RegexMatchError('Relative info not found in html with regex')
 
+        with open("form.txt", "w", encoding="utf-8") as f:
+             f.write(new_form)
+        print(new_form)
         with open("form.txt", "r", encoding="utf-8") as f:
             if new_form == f.read():
                 return True
-        with open("form.txt", "w", encoding="utf-8") as f:
-             f.write(new_form)
+        
         return False
 
     def get_info(self, html=None):
@@ -192,11 +194,6 @@ def main(username, password):
     except Exception as err:
         return 1, '打卡登录失败：' + str(err)
     
-    try:
-        res = self.sess.get(self.base_url)
-        html = res.content.decode()
-        new_form = re.findall(r'<ul>[\s\S]*?</ul>', html)[0]
-        return 2, new_form
     
     try:
         ret = hit_carder.check_form()
