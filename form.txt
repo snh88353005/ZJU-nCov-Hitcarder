@@ -40,8 +40,15 @@
                                     </div>
                                 </div>
                             </li>
-                            
-                            <li v-if="info.sfzx==='0'">
+                            <li v-show="info.sfzx==='0'">
+                                <div name="sfzgn" class="radio"><span>是否在境外 Are you now outside of China?<i class="icon iconfont icon-shuoming"></i><em></em></span>
+                                    <div>
+                                        <div @click="setSfzgn(0)"><span :class="{active: sfzgn==0}"><i></i></span> <span>是 Yes</span></div>
+                                        <div @click="setSfzgn(1)"><span :class="{active: sfzgn==1}"><i></i></span> <span>否 No</span></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
                                 <div name="sfymqjczrj" class="radio"><span>同住人员当天是否存在发热症状、红黄码状态或者14天内从境外返校情况。Do the people living with you have a fever, or their health code turned red or yellow, or will the people living with you return from abroad within 14 days?<i class="icon iconfont icon-shuoming"></i><em></em></span>
                                     <div>
                                         <div @click="info.sfymqjczrj=1"><span :class="{active: info.sfymqjczrj==1}"><i></i></span> <span>是 Yes</span></div>
@@ -50,7 +57,16 @@
                                 </div>
                             </li>
 
-
+                            <li v-if="info.sfzx==='0' && sfzgn== 1">
+                                <div name="ismoved" class="radio"><span>今日是否有离开校区所在城市的外出安排。Are you planning to leave the city of your campus today?<i class="icon iconfont icon-shuoming"></i><em></em></span>
+                                    <div>
+                                        <div @click="info.ismoved=2"><span :class="{active: info.ismoved==2}"><i></i></span> <span>离市 Leaving the City</span></div>
+                                        <div @click="info.ismoved=3"><span :class="{active: info.ismoved==3}"><i></i></span> <span>离省 Leaving the Province</span></div>
+                                        <div @click="info.ismoved=4"><span :class="{active: info.ismoved==4}"><i></i></span> <span>出境 Leaving China</span></div>
+                                        <div @click="info.ismoved=5"><span :class="{active: info.ismoved==5}"><i></i></span> <span>无 No</span></div>
+                                    </div>
+                                </div>
+                            </li>
 
                                                         <li>
                                 <div name="internship" class="radio"><span>今日是否进行实习或实践。Are you doing an internship today?<i class="icon iconfont icon-shuoming"></i><em></em></span>
@@ -84,48 +100,40 @@
                                     <span>所在地点（请打开手机位置功能，并在手机权限设置中选择允许访问位置信息）Your location (Please turn on the location access function on your mobile phone and allow App to access your location)<i class="icon iconfont icon-shuoming"></i></span>
                                     <input v-model="info.area" readonly type="text" placeholder="点击获取地理位置 Click to get geographic location"></div>
                             </li>
-                            
-                            <li>
-                                <div name="sqhzjkkys" class="radio"><span>今日申领健康码的状态？What's the color of your health code today？<i class="icon iconfont icon-shuoming"></i><em></em></span>
-                                    <div>
-                                        <div @click="info.sqhzjkkys=1"><span :class="{active: info.sqhzjkkys==1}"><i></i></span> <span>绿码 Green code</span></div>
-                                        <div @click="info.sqhzjkkys=2"><span :class="{active: info.sqhzjkkys==2}"><i></i></span> <span>红码 Red code</span></div>
-                                        <div @click="info.sqhzjkkys=3"><span :class="{active: info.sqhzjkkys==3}"><i></i></span> <span>黄码 Yellow code</span></div>
-                                        <div @click="info.sqhzjkkys=4"><span :class="{active: info.sqhzjkkys==4}"><i></i></span> <span>橙码 Orange code</span></div>
-                                        <div @click="info.sqhzjkkys=5"><span :class="{active: info.sqhzjkkys==5}"><i></i></span> <span>无 No</span></div>
-                                    </div>
-                                </div>
-                            </li>
-                           
-                            
 
-                            <li>
-                                <div name="tw" class="radio"><span>今日是否有发热症状（高于37.2 ℃）？ Do you have a fever(above 37.2℃) today?<i class="icon iconfont icon-shuoming"></i><em></em></span>
+                            <li v-show="info.sfzx==='0' && sfzgn == 0">
+                                <div class="multiText"><span>近14日到访过的国家/地区 Countries you've visited over the past 14 days<i class="icon iconfont icon-shuoming"></i></span>
+                                    <div><textarea v-model="info.zjdfgj" name="zjdfgj" rows="" cols="" placeholder="多个用逗号隔开（如德国，荷兰）separate by commas if more than one country (eg: Germany, Netherlands)"></textarea></div>
+                                </div>
+                            </li>
+                            <li v-show="info.sfzx==='0' && sfzgn == 0">
+                                <div name="sfyrjjh" class="radio"><span>未来14天内是否有入境计划? Do you have plan to enter Chinese Mainland in the next 14 days?<i class="icon iconfont icon-shuoming"></i><em></em></span>
                                     <div>
+                                        <div @click="info.sfyrjjh=1"><span :class="{active: info.sfyrjjh==1}"><i></i></span> <span>是 Yes</span></div>
+                                        <div @click="info.sfyrjjh=0"><span :class="{active: info.sfyrjjh==0}"><i></i></span> <span>否 No</span></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li v-show="info.sfzx==='0' && sfzgn == 0 && info.sfyrjjh == 1">
+                                <div name="cfgj" class="text">
+                                    <span>出发国家或地区 Departure country or region?<i class="icon iconfont icon-shuoming"></i></span>
+                                    <div>
+                                        <select class="hcqbtn" v-model='info.cfgj' name="cfgj" id="cfgj" style="display: block;width: 100%;">
+                                            <option value="">请选择国家或地区 Scroll down to select country or region</option>
+                                            <option v-for='p in country' :value="p.name">{{p.name}} {{p.ename}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
 
-                                        <div @click="info.tw='1'"><span :class="{active: info.tw==='1'}"><i></i></span> <span>是 Yes</span></div>
-                                        <div @click="info.tw='0'"><span :class="{active: info.tw==='0'}"><i></i></span> <span>否 No</span></div>
-                                    </div>
+                            <li v-show="info.sfzx==='0' && sfzgn == 0 && info.sfyrjjh == 1">
+                                <div class="multiText"><span>途经国家/地区（直航填无）Transit Country/region? (Enter “no” if direct flights).<i class="icon iconfont icon-shuoming"></i></span>
+                                    <div><textarea v-model="info.tjgj" name="tjgj" rows="" cols="" placeholder="多个用逗号隔开（如德国，荷兰）separate by commas if more than one country (eg: Germany, Netherlands)"></textarea></div>
                                 </div>
                             </li>
-                            <li v-show="info.tw == 1">
-                                <div name="sfyqjzgc" class="radio"><span>是否到具有发热门诊（诊室）的医疗机构就诊？ Have you visited the medical institutions with the fever clinic last few days?<i class="icon iconfont icon-shuoming"></i><em></em></span>
-                                    <div>
-                                        <div @click="info.sfyqjzgc=1"><span :class="{active: info.sfyqjzgc==1}"><i></i></span> <span>是 Yes</span></div>
-                                        <div @click="info.sfyqjzgc=0"><span :class="{active: info.sfyqjzgc==0}"><i></i></span> <span>否 No</span></div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div name="sfcxzysx" class="radio"><span>今日是否有涉及涉疫情的管控措施 Are you under any control measures related to the COVID-19 today?<i class="icon iconfont icon-shuoming"></i><em></em></span>
-                                    <div>
-                                        <div @click="info.sfcxzysx=1"><span :class="{active: info.sfcxzysx==1}"><i></i></span> <span>是 Yes</span></div>
-                                        <div @click="info.sfcxzysx=0"><span :class="{active: info.sfcxzysx==0}"><i></i></span> <span>否 No</span></div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li v-if="info.sfcxzysx==1">
-                                <div name="qksm" class="radio"><span>情况说明 Details<i class="icon iconfont icon-shuoming"></i><em></em></span>
+                            <li v-show="info.sfzx==='0' && sfzgn == 0 && info.sfyrjjh == 1">
+                                <div class="text">
+                                    <span>拟入境日期（北京时间） Planned date of arrival<i class="icon iconfont icon-shuoming"></i></span>
                                     <div>
                                         <div @click="info.qksm='14天集中隔离医学观察'"><span :class="{active: info.qksm=='14天集中隔离医学观察'}"><i></i></span> <span>14天集中隔离医学观察    14-day centralized quarantine medical observation</span></div>
                                         <div @click="info.qksm='7天集中隔离医学观察'"><span :class="{active: info.qksm=='7天集中隔离医学观察'}"><i></i></span> <span>7天集中隔离医学观察    7-day centralized quarantine medical observation</span></div>
