@@ -191,13 +191,23 @@ def main(username, password):
         print('已登录到浙大统一身份认证平台')
     except Exception as err:
         return 1, '打卡登录失败：' + str(err)
-
+    
+    try:
+        res = self.sess.get(self.base_url)
+        html = res.content.decode()
+        new_form = re.findall(r'<ul>[\s\S]*?</ul>', html)[0]
+        return 2, new_form
+    
     try:
         ret = hit_carder.check_form()
         if not ret:
             return 2, '打卡信息已改变，请手动打卡'
     except Exception as err:
         return 1, '获取信息失败，请手动打卡: ' + str(err)
+    
+    
+
+    
 
     try:
         hit_carder.get_info()
