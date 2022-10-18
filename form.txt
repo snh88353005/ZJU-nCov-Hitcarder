@@ -84,12 +84,19 @@
                                     <span>所在地点（请打开手机位置功能，并在手机权限设置中选择允许访问位置信息）Your location (Please turn on the location access function on your mobile phone and allow App to access your location)<i class="icon iconfont icon-shuoming"></i></span>
                                     <input v-model="info.area" readonly type="text" placeholder="点击获取地理位置 Click to get geographic location"></div>
                             </li>
-
-                            <li v-show="info.sfzx==='0' && sfzgn == 0">
-                                <div class="multiText"><span>近14日到访过的国家/地区 Countries you've visited over the past 14 days<i class="icon iconfont icon-shuoming"></i></span>
-                                    <div><textarea v-model="info.zjdfgj" name="zjdfgj" rows="" cols="" placeholder="多个用逗号隔开（如德国，荷兰）separate by commas if more than one country (eg: Germany, Netherlands)"></textarea></div>
+                            
+                            <li>
+                                <div name="sqhzjkkys" class="radio"><span>今日申领健康码的状态？What's the color of your health code today？<i class="icon iconfont icon-shuoming"></i><em></em></span>
+                                    <div>
+                                        <div @click="info.sqhzjkkys=1"><span :class="{active: info.sqhzjkkys==1}"><i></i></span> <span>绿码 Green code</span></div>
+                                        <div @click="info.sqhzjkkys=2"><span :class="{active: info.sqhzjkkys==2}"><i></i></span> <span>红码 Red code</span></div>
+                                        <div @click="info.sqhzjkkys=3"><span :class="{active: info.sqhzjkkys==3}"><i></i></span> <span>黄码 Yellow code</span></div>
+                                        <div @click="info.sqhzjkkys=4"><span :class="{active: info.sqhzjkkys==4}"><i></i></span> <span>橙码 Orange code</span></div>
+                                        <div @click="info.sqhzjkkys=5"><span :class="{active: info.sqhzjkkys==5}"><i></i></span> <span>无 No</span></div>
+                                    </div>
                                 </div>
                             </li>
+                           
                             
 
                             <li>
